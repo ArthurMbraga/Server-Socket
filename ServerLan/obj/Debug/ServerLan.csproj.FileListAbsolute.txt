@@ -1,0 +1,5 @@
+c:\users\arthur\documents\visual studio 2015\Projects\ServerLan\ServerLan\bin\Debug\ServerLan.dll
+c:\users\arthur\documents\visual studio 2015\Projects\ServerLan\ServerLan\bin\Debug\ServerLan.pdb
+c:\users\arthur\documents\visual studio 2015\Projects\ServerLan\ServerLan\obj\Debug\ServerLan.csprojResolveAssemblyReference.cache
+c:\users\arthur\documents\visual studio 2015\Projects\ServerLan\ServerLan\obj\Debug\ServerLan.dll
+c:\users\arthur\documents\visual studio 2015\Projects\ServerLan\ServerLan\obj\Debug\ServerLan.pdb

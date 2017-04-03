@@ -1,0 +1,46 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Net;
+using System.Net.Sockets;
+using System.IO;
+
+namespace ServerLan
+{
+    public class Server
+    {
+        Socket server_socket;
+
+        public Server(string ip, int port)
+        {
+            server_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+            IPAddress serverIP = IPAddress.Parse(ip);
+            server_socket.Bind(new IPEndPoint(IPAddress.Parse(ip), port));
+        }
+
+        public Server(IPAddress ip, int port)
+        {
+            server_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+            try
+            {
+                server_socket.Bind(new IPEndPoint(ip, port));
+                server_socket.Listen(100);
+
+                server_socket.BeginAccept(new AsyncCallback(acceptCallback), null);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
+        private void acceptCallback(IAsyncResult AR)
+        {
+
+        }
+    }
+}
