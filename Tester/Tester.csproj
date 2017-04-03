@@ -80,9 +80,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ServerLan\ServerLan.csproj">
+    <ProjectReference Include="..\ServerLan\ServerSocket.csproj">
       <Project>{db9f6f52-d4bb-43ae-8bb5-f4ca5709804f}</Project>
-      <Name>ServerLan</Name>
+      <Name>ServerSocket</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
