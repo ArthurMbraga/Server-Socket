@@ -1,0 +1,5 @@
+C:\Users\Arthur\Documents\Visual Studio 2015\Projects\ServerLan\ServerLan\bin\Debug\ServerLan.dll
+C:\Users\Arthur\Documents\Visual Studio 2015\Projects\ServerLan\ServerLan\bin\Debug\ServerLan.pdb
+C:\Users\Arthur\Documents\Visual Studio 2015\Projects\ServerLan\ServerLan\obj\Debug\ServerSocket.csprojResolveAssemblyReference.cache
+C:\Users\Arthur\Documents\Visual Studio 2015\Projects\ServerLan\ServerLan\obj\Debug\ServerLan.dll
+C:\Users\Arthur\Documents\Visual Studio 2015\Projects\ServerLan\ServerLan\obj\Debug\ServerLan.pdb
