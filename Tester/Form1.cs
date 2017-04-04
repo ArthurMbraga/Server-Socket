@@ -12,16 +12,26 @@ using System.Net.Sockets;
 
 namespace Tester
 {
-    public partial class Tester : Form
+    public partial class Form1 : Form
     {
         Server server;
         Client client1;
         Client client2;
         string ip = "25.145.99.147";
 
-        public Tester()
+        public Form1()
         {        
-            InitializeComponent();            
+            InitializeComponent();
+
+            server = new Server(ip, 500);
+            client1 = new Client(ip, 500);
+            client2 = new Client(ip, 500);
+
+            client1.onreceivedata += client1_r;
+            client2.onreceivedata += client2_r;
+            server.onreceivedata += server_r;
+            server.onclientdisconnect += aloo;
+            Output.onreceivemessage += Output_onreceivemessage;
         }
 
         private void Output_onreceivemessage(string sender_name, MessageType type, string message)
@@ -55,7 +65,7 @@ namespace Tester
             });
         }
 
-        private void client1_r(string m, Socket socket)
+        private void client1_r(string m)
         {
             Invoke((MethodInvoker)delegate
             {
@@ -63,7 +73,7 @@ namespace Tester
             });
         }
 
-        private void client2_r(string m, Socket socket)
+        private void client2_r(string m)
         {
             Invoke((MethodInvoker)delegate
             {
@@ -71,7 +81,7 @@ namespace Tester
             });
         }
 
-        private void server_r(string m, Socket socket)
+        private void server_r(string m)
         {
             Invoke((MethodInvoker)delegate
             {
@@ -90,36 +100,6 @@ namespace Tester
             client2 = new Client(ip, 500);
 
             client2.onreceivedata += client2_r;
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            client1.send(Properties.Resources.Test);
-        }
-
-        private void Tester_Load(object sender, EventArgs e)
-        {
-            server = new Server(ip, 500);
-            client1 = new Client(ip, 500);
-            client2 = new Client(ip, 500);
-
-            client1.onreceivedata += client1_r;
-            client2.onreceivedata += client2_r;
-            server.onreceivedata += server_r;
-            server.onclientdisconnect += aloo;
-            server.onreceivebitmap += Server_onreceivebitmap;
-            Output.onreceivemessage += Output_onreceivemessage;
-        }
-
-        private void Server_onreceivebitmap(Bitmap bitmap, Socket client)
-        {
-            panel1.BackgroundImage = bitmap;
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            client1.send(Properties.Resources.Test);
-            client2.send("Client 2");
         }
     }
 }

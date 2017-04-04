@@ -1,5 +1,6 @@
 C:\Users\Arthur\Documents\Visual Studio 2015\Projects\ServerLan\Tester\bin\Debug\Tester.exe.config
 C:\Users\Arthur\Documents\Visual Studio 2015\Projects\ServerLan\Tester\obj\Debug\Tester.csprojResolveAssemblyReference.cache
+C:\Users\Arthur\Documents\Visual Studio 2015\Projects\ServerLan\Tester\obj\Debug\Tester.Form1.resources
 C:\Users\Arthur\Documents\Visual Studio 2015\Projects\ServerLan\Tester\obj\Debug\Tester.Properties.Resources.resources
 C:\Users\Arthur\Documents\Visual Studio 2015\Projects\ServerLan\Tester\obj\Debug\Tester.csproj.GenerateResource.Cache
 C:\Users\Arthur\Documents\Visual Studio 2015\Projects\ServerLan\Tester\bin\Debug\Tester.exe
@@ -8,4 +9,3 @@ C:\Users\Arthur\Documents\Visual Studio 2015\Projects\ServerLan\Tester\bin\Debug
 C:\Users\Arthur\Documents\Visual Studio 2015\Projects\ServerLan\Tester\bin\Debug\ServerLan.pdb
 C:\Users\Arthur\Documents\Visual Studio 2015\Projects\ServerLan\Tester\obj\Debug\Tester.exe
 C:\Users\Arthur\Documents\Visual Studio 2015\Projects\ServerLan\Tester\obj\Debug\Tester.pdb
-C:\Users\Arthur\Documents\Visual Studio 2015\Projects\ServerLan\Tester\obj\Debug\Tester.Tester.resources

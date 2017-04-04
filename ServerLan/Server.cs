@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
-using System.Drawing;
 
 namespace ServerLan
 {
@@ -16,8 +15,7 @@ namespace ServerLan
         private List<Socket> clients_connected = new List<Socket>();
 
         public event onClientDisconnect onclientdisconnect;
-        public event onReceiveText onreceivedata;
-        public event onReceiveBitmap onreceivebitmap;
+        public event onReceiveData onreceivedata;
 
         public Server(string ip, int port)
         {
@@ -42,6 +40,7 @@ namespace ServerLan
 
                 server_socket.BeginAccept(new AsyncCallback(acceptCallback), server_socket);
                 Output.sendMsg("Server", MessageType.Process, "Waiting for connection...");
+
             }
             catch (ArgumentNullException ae)
             {
@@ -73,126 +72,24 @@ namespace ServerLan
             server_socket.BeginAccept(new AsyncCallback(acceptCallback), server_socket);
         }
 
-
-        List<DataBuilder> readqueue = new List<DataBuilder>();
-
         private void readCallback(IAsyncResult ar)
         {
             StateObject state = (StateObject)ar.AsyncState;
             Socket handler = state.workSocket;
 
             //Read data from the client socket.  
-            int read_bytes = handler.EndReceive(ar);
+            int read = handler.EndReceive(ar);
+            byte[] dataBuf = new byte[read];
 
             // Data was read from the client socket.  
-            if (read_bytes > 0)
+            if (read > 0)
             {
-                DataBuilder databuilder = null;
+                string message = Encoding.ASCII.GetString(state.buffer, 0, read);
+                Output.sendMsg("Server", MessageType.Process, "Received " + message.Length + " bits from the client(" + handler.LocalEndPoint.ToString() + ")");
+                Output.sendMsg("Server", MessageType.ContentMessage, "Message data: " + message);
 
-                List<DataBuilder> to_remove = new List<DataBuilder>();
-
-                //Check if it's in the queue
-                foreach (DataBuilder db in readqueue)
-                    if (db == null)
-                        to_remove.Add(db);
-                    else
-                    if (db.socket == handler)
-                        databuilder = db;
-
-                foreach (DataBuilder db in to_remove)
-                    readqueue.Remove(db);
-
-
-                //Variable that receives the buffer without tags
-                byte[] realContent;
-
-                if (databuilder == null)
-                {
-                    realContent = new byte[read_bytes - MessageTags.tagLength];
-
-                    //Get inicial tag
-                    byte[] start = new byte[MessageTags.tagLength];
-                    Array.Copy(state.buffer, start, MessageTags.tagLength);
-
-                    DataType type;
-                    if (start.SequenceEqual(MessageTags.bTextStartTag))
-                        type = DataType.text;
-                    else if (start.SequenceEqual(MessageTags.bImageStartTag))
-                        type = DataType.image;
-                    else
-                        throw new Exception("Invalid data");
-
-                    databuilder = new DataBuilder(handler, type);
-                    readqueue.Add(databuilder);
-
-                    //Remove inicial tag and zeros
-                    Array.Copy(state.buffer, MessageTags.tagLength - 1, realContent, 0, read_bytes - MessageTags.tagLength);
-                }
-                else
-                {
-                    realContent = new byte[read_bytes];
-                    //Remove zeros
-                    Array.Copy(state.buffer, 0, realContent, 0, read_bytes);
-                }
-
-                if (realContent.Length > 0)
-                {
-                    byte[] end = new byte[MessageTags.tagLength];
-                    Array.Copy(realContent, realContent.Length - MessageTags.tagLength, end, 0, MessageTags.tagLength);
-
-                    //Check if it contains the end tag
-                    if (end.SequenceEqual(MessageTags.bEndTag))
-                    {
-                        //Remove end tag
-                        byte[] newcontent = new byte[realContent.Length - MessageTags.tagLength];
-
-                        Array.Copy(realContent, 0, newcontent, 0, newcontent.Length);
-
-                        realContent = newcontent;
-                        databuilder.receivedAllData = true;
-
-                        try
-                        {
-                            if (readqueue.Contains(databuilder))
-                                readqueue.Remove(databuilder);
-                        }
-                        catch (Exception e)
-                        {
-                            Output.sendMsg("Server", MessageType.Error, "Exeption: " + e.ToString());
-                        }
-                    }
-
-
-                    //Add realcontent to dadabuilder buffer
-                    databuilder.addPackage(realContent);
-                }
-
-                Output.sendMsg("Server", MessageType.Process, "Received " + read_bytes + " bits from the client(" + handler.LocalEndPoint.ToString() + ")");
-
-                if (databuilder.receivedAllData)
-                {
-                    Output.sendMsg("Server", MessageType.Process, "All data received from the client(" + handler.LocalEndPoint.ToString() + ")");
-
-                    if (databuilder.datatype == DataType.text)
-                    {
-                        //Convert data to string
-                        string message = Encoding.ASCII.GetString(databuilder.buffer);
-                        Output.sendMsg("Server", MessageType.ContentMessage, "Received all text: " + message);
-
-                        if (onreceivedata != null)
-                            onreceivedata(message, databuilder.socket);
-                    }
-                    else if (databuilder.datatype == DataType.image)
-                    {
-                        Output.sendMsg("Server", MessageType.ContentMessage, "Received all Bitmap");
-
-                        //Convert data to bitmap
-                        Bitmap bitmap = ImageManager.byteToImage(databuilder.buffer);
-
-                        if (onreceivebitmap != null)
-                            onreceivebitmap(bitmap, databuilder.socket);
-                    }
-                }
+                if (onreceivedata != null)
+                    onreceivedata(message);
 
                 handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(readCallback), state);
             }
@@ -238,36 +135,10 @@ namespace ServerLan
             // Convert the string data to byte data using ASCII encoding.  
             byte[] byteData = Encoding.ASCII.GetBytes(data);
 
-            send(byteData, client, DataType.text);
-        }
-
-        public void send(Socket client, Bitmap bitmap)
-        {
-            // Convert the bitmap to byte data.  
-            byte[] byteData = ImageManager.imageToByte(bitmap);
-
-            send(byteData, client, DataType.image);
-        }
-
-        private void send(byte[] data, Socket client, DataType type)
-        {
-            byte[] byteStartTag = new byte[0];
-            if (type == DataType.image)
-            {
-                Output.sendMsg("Server", MessageType.Process, "Starting to send a bitmap to client(+" + client.LocalEndPoint.ToString() + "+)...");
-                byteStartTag = MessageTags.bImageStartTag;
-            }
-            else if (type == DataType.text)
-            {
-                Output.sendMsg("Server", MessageType.Process, "Starting to send a message to client(+" + client.LocalEndPoint.ToString() + "+)...");
-                byteStartTag = MessageTags.bTextStartTag;
-            }
-
-            byte[] byteEndTag = Encoding.ASCII.GetBytes(MessageTags.EndTag);
-
-            client.BeginSend(byteStartTag, 0, byteStartTag.Length, 0, new AsyncCallback(sendCallback), client);
-            client.BeginSend(data, 0, data.Length, 0, new AsyncCallback(sendCallback), client);
-            client.BeginSend(byteEndTag, 0, byteEndTag.Length, 0, new AsyncCallback(sendCallback), client);
+            Output.sendMsg("Server", MessageType.Process, "Starting to send a message to client(+" + client.LocalEndPoint.ToString() + "+)...");
+            // Begin sending the data to the remote device.  
+            client.BeginSend(byteData, 0, byteData.Length, 0,
+                new AsyncCallback(sendCallback), client);
         }
 
         public void sendAll(string data)

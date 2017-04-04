@@ -1,6 +1,6 @@
 ﻿namespace Tester
 {
-    partial class Tester
+    partial class Form1
     {
         /// <summary>
         /// Required designer variable.
@@ -38,9 +38,6 @@
             this.button5 = new System.Windows.Forms.Button();
             this.richTextBox4 = new System.Windows.Forms.RichTextBox();
             this.richTextBox5 = new System.Windows.Forms.RichTextBox();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -69,7 +66,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(591, 22);
+            this.button1.Location = new System.Drawing.Point(413, 370);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 3;
@@ -99,7 +96,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(591, 51);
+            this.button4.Location = new System.Drawing.Point(510, 370);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 6;
@@ -109,7 +106,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(591, 80);
+            this.button5.Location = new System.Drawing.Point(510, 406);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 23);
             this.button5.TabIndex = 7;
@@ -119,7 +116,7 @@
             // 
             // richTextBox4
             // 
-            this.richTextBox4.Location = new System.Drawing.Point(347, 485);
+            this.richTextBox4.Location = new System.Drawing.Point(389, 485);
             this.richTextBox4.Name = "richTextBox4";
             this.richTextBox4.Size = new System.Drawing.Size(227, 188);
             this.richTextBox4.TabIndex = 8;
@@ -133,41 +130,11 @@
             this.richTextBox5.TabIndex = 9;
             this.richTextBox5.Text = "";
             // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(302, 370);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 10;
-            this.button6.Text = "Image";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(591, 161);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
-            this.button7.TabIndex = 11;
-            this.button7.Text = "Image";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
-            // 
-            // panel1
-            // 
-            this.panel1.Location = new System.Drawing.Point(591, 446);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(244, 266);
-            this.panel1.TabIndex = 12;
-            // 
-            // Tester
+            // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(847, 753);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.button7);
-            this.Controls.Add(this.button6);
+            this.ClientSize = new System.Drawing.Size(628, 700);
             this.Controls.Add(this.richTextBox5);
             this.Controls.Add(this.richTextBox4);
             this.Controls.Add(this.button5);
@@ -178,9 +145,8 @@
             this.Controls.Add(this.richTextBox3);
             this.Controls.Add(this.richTextBox2);
             this.Controls.Add(this.richTextBox1);
-            this.Name = "Tester";
-            this.Text = "Tester";
-            this.Load += new System.EventHandler(this.Tester_Load);
+            this.Name = "Form1";
+            this.Text = "Form1";
             this.ResumeLayout(false);
 
         }
@@ -197,9 +163,6 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.RichTextBox richTextBox4;
         private System.Windows.Forms.RichTextBox richTextBox5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Panel panel1;
     }
 }
 
